@@ -1,10 +1,15 @@
 package com.contest.grass.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class User {
+    @Id
     private String id;
     private String email;
-    private String KakaoId;
-    private String GoogleId;
+    private String kakaoId;
+    private String googleId;
 
 
     public String getId() {
@@ -24,18 +29,18 @@ public class User {
     }
 
     public String getKakaoId() {
-        return KakaoId;
+        return kakaoId;
     }
 
     public void setKakaoId(String kakaoId) {
-        KakaoId = kakaoId;
+        this.kakaoId = kakaoId;
     }
 
     public String getGoogleId() {
-        return GoogleId;
+        return googleId;
     }
 
     public void setGoogleId(String googleId) {
-        GoogleId = googleId;
+        this.googleId = googleId;
     }
 }
