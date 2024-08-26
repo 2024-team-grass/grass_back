@@ -31,7 +31,8 @@ public class User {
     @Column(unique = true)
     private String googleId;
 
-
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean isVerified;
 
 
     public Long getId() {
@@ -88,5 +89,13 @@ public class User {
 
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean verified) {
+        isVerified = verified;
     }
 }
