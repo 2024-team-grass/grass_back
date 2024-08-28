@@ -1,8 +1,8 @@
 package com.contest.grass.service;
 
 import com.contest.grass.entity.User;
-import com.contest.grass.repository.UserRepository;
 import com.contest.grass.entity.EmailVerificationToken;
+import com.contest.grass.repository.UserRepository;
 import com.contest.grass.repository.EmailVerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,23 +16,30 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final EmailVerificationTokenRepository tokenRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    private EmailVerificationTokenRepository tokenRepository;
+    public UserService(UserRepository userRepository, EmailVerificationTokenRepository tokenRepository,
+                       BCryptPasswordEncoder passwordEncoder, EmailService emailService) {
+        this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+    }
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private EmailService emailService; // 이메일 서비스 추가
-
-    // 회원가입 처리 및 이메일 인증 발송
+    // 1. 회원가입 처리 및 이메일 인증 발송
     @Transactional
-    public User registerUser(User user) {
-        // 비밀번호 암호화
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User register(String email, String name, String password, String phoneNumber) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password)); // 비밀번호 암호화
+        user.setPhoneNumber(phoneNumber);
+        user.setNickname(UUID.randomUUID().toString().substring(0, 8)); // 임시 닉네임 생성
+        user.setSprouts(0); // 새싹 초기값
         user.setIsVerified(false); // 이메일 인증 상태를 false로 초기화
         User savedUser = userRepository.save(user);
 
@@ -47,7 +54,7 @@ public class UserService {
         return savedUser;
     }
 
-    // 이메일 인증 처리
+    // 2. 이메일 인증 처리
     @Transactional
     public boolean verifyEmail(String token) {
         Optional<EmailVerificationToken> verificationTokenOpt = tokenRepository.findByToken(token);
@@ -74,30 +81,74 @@ public class UserService {
         return true; // 이메일 인증 성공
     }
 
-    // 이메일로 사용자 찾기
+    // 3. 로그인
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return user;
+    }
+
+    // 4. 이메일로 사용자 찾기
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    // 소셜 ID로 사용자 찾기 (Google)
+    // 5. 소셜 ID로 사용자 찾기 (Google)
     public Optional<User> findByGoogleId(String googleId) {
         return userRepository.findByGoogleId(googleId);
     }
 
-    // 소셜 ID로 사용자 찾기 (Kakao)
+    // 6. 소셜 ID로 사용자 찾기 (Kakao)
     public Optional<User> findByKakaoId(String kakaoId) {
         return userRepository.findByKakaoId(kakaoId);
     }
 
-    // 전화번호로 사용자 찾기
+    // 7. 전화번호로 사용자 찾기
     public Optional<User> findByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
 
-    // 비밀번호 변경 처리
+    // 8. 비밀번호 변경 처리
     @Transactional
     public User changePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
+    }
+
+    // 9. 아이디 찾기 (전화번호로 이메일 찾기)
+    public String findEmailByPhoneNumber(String phoneNumber) {
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        return user.map(User::getEmail).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // 10. 비밀번호 찾기 (임시 비밀번호 발송)
+    public String sendTemporaryPassword(String phoneNumber) {
+        User user = userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String tempPassword = UUID.randomUUID().toString().substring(0, 8);
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        userRepository.save(user);
+        // 실제로는 이 임시 비밀번호를 사용자에게 SMS나 이메일로 보내야 함
+        return tempPassword;
+    }
+
+    // 11. 비밀번호 재설정
+    @Transactional
+    public User resetPassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return userRepository.save(user);
+    }
+
+    // 12. 마이페이지 조회
+    public User getUserProfile(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        return user.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 }

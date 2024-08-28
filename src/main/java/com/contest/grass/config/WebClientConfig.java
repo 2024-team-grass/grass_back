@@ -12,7 +12,6 @@ import java.time.Duration;
 
 @Configuration
 public class WebClientConfig {
-
     @Bean
     public WebClient webClient() {
         HttpClient client = HttpClient.create()

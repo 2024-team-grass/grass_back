@@ -7,23 +7,34 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long OrderId;
+    private Long CartId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_title")
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    private Integer count; //선택 개수
+    private Integer count; // 선택 개수
 
     @Transient
-    private double totalPrice;
+    private double itemPrice; // 개별 상품 금액
 
+    @Transient
+    private double totalPrice; // 총 금액
 
+    private double shippingFee; // 배송비
 
+    // Getters and Setters
+    public Long getCartId() {
+        return CartId;
+    }
+
+    public void setCartId(Long cartId) {
+        this.CartId = cartId;
+    }
 
     public User getUser() {
         return user;
@@ -49,11 +60,27 @@ public class Cart {
         this.count = count;
     }
 
+    public double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
     public double getTotalPrice() {
         return totalPrice;
     }
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public double getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(double shippingFee) {
+        this.shippingFee = shippingFee;
     }
 }

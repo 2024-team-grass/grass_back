@@ -1,34 +1,44 @@
 package com.contest.grass.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
 @Entity
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long PostId;
+    private Long postId;
 
-    @Column(length = 10)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(length = 10, nullable = false)
     private String nickname;
 
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String content;
 
     private Long goodbtn;
 
+    @Column(nullable = false)
+    private String createdAt; // 생성 날짜
 
-
-
+    // Getter와 Setter 메서드
     public Long getPostId() {
-        return PostId;
+        return postId;
     }
 
     public void setPostId(Long postId) {
-        PostId = postId;
+        this.postId = postId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getNickname() {
@@ -56,4 +66,11 @@ public class Post {
     }
 
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 }

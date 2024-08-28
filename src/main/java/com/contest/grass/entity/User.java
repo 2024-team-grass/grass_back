@@ -1,10 +1,7 @@
 package com.contest.grass.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -31,10 +28,19 @@ public class User {
     @Column(unique = true)
     private String googleId;
 
+    @Column(nullable = false, length = 20, unique = true)
+    private String nickname;  // 추가된 필드
+
+    @Column(nullable = false)
+    private Integer sprouts;  // 보유 새싹 (포인트 또는 레벨)
+
     @Column(columnDefinition = "TINYINT(1)")
-    private boolean isVerified;
+    private boolean isVerified;  // 이메일 인증 여부
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> posts;  // 사용자가 작성한 게시물들과의 관계
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -91,11 +97,35 @@ public class User {
         this.googleId = googleId;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getSprouts() {
+        return sprouts;
+    }
+
+    public void setSprouts(Integer sprouts) {
+        this.sprouts = sprouts;
+    }
+
     public boolean isVerified() {
         return isVerified;
     }
 
-    public void setIsVerified(boolean verified) {
-        isVerified = verified;
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }
