@@ -1,9 +1,7 @@
 package com.contest.grass.controller;
 
-import com.contest.grass.dto.LoginRequestDto;
-import com.contest.grass.dto.SignUpRequestDto;
-import com.contest.grass.dto.FindIdRequestDto;
-import com.contest.grass.dto.FindPasswordRequestDto;
+import com.contest.grass.config.JwtTokenUtil;
+import com.contest.grass.dto.*;
 import com.contest.grass.entity.GoogleUser;
 import com.contest.grass.entity.KakaoUser;
 import com.contest.grass.entity.User;
@@ -31,6 +29,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil; // JWT 유틸리티 클래스
+
     // Google 로그인
     @PostMapping("/google")
     public ResponseEntity<?> authenticateWithGoogle(@RequestBody String token) {
@@ -54,7 +55,10 @@ public class AuthController {
                 return userRepository.save(newUser);
             });
 
-            return ResponseEntity.ok(user);
+            // JWT 토큰 생성
+            String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
+
+            return ResponseEntity.ok(new AuthResponse(jwtToken));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed");
         }
@@ -84,7 +88,10 @@ public class AuthController {
                 return userRepository.save(newUser);
             });
 
-            return ResponseEntity.ok(user);
+            // JWT 토큰 생성
+            String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
+
+            return ResponseEntity.ok(new AuthResponse(jwtToken));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed");
         }
@@ -98,7 +105,9 @@ public class AuthController {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                return ResponseEntity.ok(user);
+                // JWT 토큰 생성
+                String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
+                return ResponseEntity.ok(new AuthResponse(jwtToken));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
@@ -120,7 +129,9 @@ public class AuthController {
         user.setPhoneNumber(signUpRequest.getPhoneNumber());
 
         userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        // 회원가입 후 바로 로그인 처리 -> JWT 토큰 생성
+        String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(jwtToken));
     }
 
     // 아이디 찾기
