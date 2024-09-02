@@ -18,8 +18,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 1. 로그인 (GET)
-    @GetMapping("/login")
+    // 1. 로그인 (POST)
+    @PostMapping("/login")
     public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
         User user = userService.login(email, password);
         return ResponseEntity.ok(user);
@@ -86,4 +86,3 @@ public class UserController {
         }
     }
 }
-
