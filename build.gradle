@@ -46,6 +46,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일 인증
     implementation 'io.netty:netty-resolver-dns-native-macos' // macOS error 관련 라이브러리
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0' // Swagger API
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
+
+
+
 }
 
 

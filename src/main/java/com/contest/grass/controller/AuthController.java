@@ -6,6 +6,8 @@ import com.contest.grass.entity.GoogleUser;
 import com.contest.grass.entity.KakaoUser;
 import com.contest.grass.entity.User;
 import com.contest.grass.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication", description = "User Authentication API") // Swagger 태그 추가
 public class AuthController {
 
     @Autowired
@@ -32,7 +35,7 @@ public class AuthController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil; // JWT 유틸리티 클래스
 
-    // Google 로그인
+    @Operation(summary = "Google 로그인", description = "Google OAuth2를 통해 사용자 인증을 수행")
     @PostMapping("/google")
     public ResponseEntity<?> authenticateWithGoogle(@RequestBody String token) {
         try {
@@ -64,7 +67,7 @@ public class AuthController {
         }
     }
 
-    // Kakao 로그인
+    @Operation(summary = "Kakao 로그인", description = "Kakao OAuth2를 통해 사용자 인증을 수행")
     @PostMapping("/kakao")
     public ResponseEntity<?> authenticateWithKakao(@RequestBody String token) {
         try {
@@ -97,7 +100,7 @@ public class AuthController {
         }
     }
 
-    // 일반 로그인
+    @Operation(summary = "일반 로그인", description = "이메일과 비밀번호를 사용한 일반 로그인.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         Optional<User> userOpt = userRepository.findByEmail(loginRequest.getEmail());
@@ -115,7 +118,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
-    // 회원가입
+    @Operation(summary = "회원가입", description = "새 사용자를 등록하고 JWT 토큰을 생성")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -134,7 +137,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(jwtToken));
     }
 
-    // 아이디 찾기
+    @Operation(summary = "아이디 찾기", description = "사용자의 전화번호를 이용해 이메일을 찾음")
     @PostMapping("/find-id")
     public ResponseEntity<?> findId(@RequestBody FindIdRequestDto findIdRequest) {
         Optional<User> userOpt = userRepository.findByPhoneNumber(findIdRequest.getPhoneNumber());
@@ -145,7 +148,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
-    // 비밀번호 찾기
+    @Operation(summary = "비밀번호 찾기", description = "사용자의 전화번호를 이용해 비밀번호 재설정 링크를 발송")
     @PostMapping("/find-password")
     public ResponseEntity<?> findPassword(@RequestBody FindPasswordRequestDto findPasswordRequest) {
         Optional<User> userOpt = userRepository.findByPhoneNumber(findPasswordRequest.getPhoneNumber());

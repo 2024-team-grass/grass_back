@@ -28,49 +28,32 @@ public class OrdersService {
 
     // 결제 처리
     public String processPayment(Orders order) {
-        String paymentMethod = order.getPaymentMethod();
-        String paymentStatus;
+        Orders.PaymentMethod paymentMethod = order.getPaymentMethod();
 
         switch (paymentMethod) {
-            case "NPay":
-                paymentStatus = processNaverPay(order);
-                break;
-            case "KakaoPay":
-                paymentStatus = processKakaoPay(order);
-                break;
-            case "CreditCard":
-                paymentStatus = processCreditCard(order);
-                break;
+            case NPay:
+                return processNPay(order);
+            case KakaoPay:
+                return processKakaoPay(order);
+            case CreditCard:
+                return processCreditCard(order);
             default:
                 throw new IllegalArgumentException("Invalid payment method: " + paymentMethod);
         }
-
-        if ("Success".equals(paymentStatus)) {
-            ordersRepository.save(order);
-            return "Payment successful and order saved.";
-        } else {
-            return "Payment failed.";
-        }
     }
 
-    // 네이버페이 결제 처리
-    private String processNaverPay(Orders order) {
-        // 네이버페이 API 호출 로직
-        // ...
-        return "Success"; // 실패 시 "Failed"를 반환
+    private String processNPay(Orders order) {
+        // NPay 결제 처리 로직
+        return "NPay 결제가 성공적으로 처리되었습니다.";
     }
 
-    // 카카오페이 결제 처리
     private String processKakaoPay(Orders order) {
-        // 카카오페이 API 호출 로직
-        // ...
-        return "Success"; // 실패 시 "Failed"를 반환
+        // KakaoPay 결제 처리 로직
+        return "KakaoPay 결제가 성공적으로 처리되었습니다.";
     }
 
-    // 신용카드 결제 처리
     private String processCreditCard(Orders order) {
-        // 신용카드 결제 API 호출 로직
-        // ...
-        return "Success"; // 실패 시 "Failed"를 반환
+        // CreditCard 결제 처리 로직
+        return "신용카드 결제가 성공적으로 처리되었습니다.";
     }
 }

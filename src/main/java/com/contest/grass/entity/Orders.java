@@ -1,13 +1,11 @@
 package com.contest.grass.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
 @Entity
 public class Orders {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +29,16 @@ public class Orders {
     @Column(length = 30)
     private String doorpassword; // 공동현관 출입번호
 
-    @Column(nullable = false, length = 20)
-    private String paymentMethod; // 결제 수단 (NaverPay, KakaoPay, CreditCard 등)
+    public enum PaymentMethod {
+        NPay,
+        KakaoPay,
+        CreditCard;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod; // 결제 수단
+
 
     @Column(nullable = false)
     private Integer totalAmount; // 주문 총액
@@ -94,11 +100,11 @@ public class Orders {
         this.doorpassword = doorpassword;
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

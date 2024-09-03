@@ -2,6 +2,7 @@ package com.contest.grass.controller;
 
 import com.contest.grass.entity.User;
 import com.contest.grass.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@Tag(name = "User", description = "Operations related to user mangement")
 public class UserController {
 
     private final UserService userService;
@@ -18,8 +20,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 1. 로그인 (POST)
-    @PostMapping("/login")
+    // 1. 로그인 (GET)
+    @GetMapping("/login")
     public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
         User user = userService.login(email, password);
         return ResponseEntity.ok(user);
@@ -86,3 +88,4 @@ public class UserController {
         }
     }
 }
+
