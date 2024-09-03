@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/api/items")
 @Tag(name = "Item", description = "Operations related to item management") // Swagger 태그 추가
 public class ItemController {
-
     private final ItemService itemService;
 
     @Autowired
