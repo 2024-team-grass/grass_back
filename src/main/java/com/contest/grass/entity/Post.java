@@ -1,5 +1,6 @@
 package com.contest.grass.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference // 순환 참조 방지
     private User user;
 
     @Column(length = 10, nullable = false)
