@@ -38,16 +38,21 @@ dependencies {
     // 최신 JJWT 라이브러리만 유지
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON parsing을 위한 Jackson 모듈
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON parsing을 위한 Jackson 모듈
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1' // JUnit
 
     implementation 'io.netty:netty-handler:4.1.68.Final'
     implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일 인증
     implementation 'io.netty:netty-resolver-dns-native-macos' // macOS error 관련 라이브러리
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0' // Swagger API
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
 
+    // Swagger API 관련 의존성
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    // 필요하다면 swagger-core 추가
+    implementation 'io.swagger.core.v3:swagger-core:2.2.15'
+
+
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
 
 }

@@ -6,6 +6,7 @@ import com.contest.grass.repository.UserRepository;
 import com.contest.grass.repository.EmailVerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final EmailVerificationTokenRepository tokenRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
     @Autowired
     public UserService(UserRepository userRepository, EmailVerificationTokenRepository tokenRepository,
-                       BCryptPasswordEncoder passwordEncoder, EmailService emailService) {
+                       PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;

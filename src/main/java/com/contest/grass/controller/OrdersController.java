@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/orders")
-@Tag(name = "Orders", description = "Operations related to order management") // Swagger 태그 추가
+@Tag(name = "Orders", description = "주문 관리 API") // Swagger 태그 추가
 public class OrdersController {
 
     private final OrdersService ordersService;

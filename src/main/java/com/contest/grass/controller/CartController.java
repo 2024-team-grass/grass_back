@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
-@Tag(name = "Cart", description = "Operations related to shopping cart management") // Swagger 태그 추가
+@Tag(name = "Cart", description = "장바구니 관리 API") // Swagger 태그 추가
 public class CartController {
 
     private final CartService cartService;
