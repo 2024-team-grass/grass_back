@@ -9,7 +9,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the post", example = "1")
+    @Schema(description = "Unique identifier for the post", example = "31")
     private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)

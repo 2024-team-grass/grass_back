@@ -12,7 +12,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the category", example = "1")
+    @Schema(description = "Unique identifier for the category", example = "61")
     private Long CategoryId;
 
     @Schema(description = "Name of the category", example = "Electronics")

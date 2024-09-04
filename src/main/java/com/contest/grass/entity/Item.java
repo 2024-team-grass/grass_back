@@ -13,7 +13,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the item", example = "1")
+    @Schema(description = "Unique identifier for the item", example = "21")
     private Long ItemId;
 
     @Column(length = 10)
@@ -23,7 +23,7 @@ public class Item {
     @Schema(description = "Price of the item in currency", example = "1000")
     private Integer price;
 
-    @Schema(description = "Sale status or discount information", example = "10% off")
+    @Schema(description = "Sale status or discount information", example = "10%")
     private String sale;
 
     @Schema(description = "Quantity of the item in stock", example = "50")

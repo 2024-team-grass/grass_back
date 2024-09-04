@@ -10,7 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the user", example = "1")
+    @Schema(description = "Unique identifier for the user", example = "11")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -22,7 +22,7 @@ public class User {
     private String password;
 
     @Column(length = 10)
-    @Schema(description = "User's name", example = "John Doe")
+    @Schema(description = "User's name", example = "User1")
     private String name;
 
     @Column(length = 11)

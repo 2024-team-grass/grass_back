@@ -3,6 +3,7 @@ package com.contest.grass.config;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +27,6 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtTokenUtil jwtTokenUtil;
 
-    // 상수 정의
     private static final String LOGIN_URL = "/login";
     private static final String ROOT_URL = "/";
     private static final String AUTH_URL_PATTERN = "/auth/**";
@@ -47,7 +47,9 @@ public class SecurityConfig {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    // 기본 Security 설정 (운영 환경)
     @Bean
+    @Profile("!dev")  // 'dev' 프로파일이 아닌 경우에만 이 필터 체인 적용
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
@@ -77,8 +79,31 @@ public class SecurityConfig {
                         })
                 );
 
-        // JWT 필터 추가
+        // JWT 필터 추가 (운영 환경에서만 사용)
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    // 테스트 환경에서 인증 없이 모든 요청 허용
+    @Bean
+    @Profile("dev")  // 'dev' 프로파일에서만 이 필터 체인 적용
+    public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN).permitAll()
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll() // Swagger 경로 허용
+                        .requestMatchers(AUTH_URL_PATTERN, API_URL_PATTERN).permitAll() // 테스트 환경에서는 인증 없이 허용
+                        .anyRequest().permitAll() // 모든 요청을 인증 없이 허용
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.setStatus(HttpServletResponse.SC_OK);  // 테스트 환경에서는 401 대신 200 OK로 응답
+                            response.getWriter().write("{\"message\": \"Test environment, no authentication required.\"}");
+                        })
+                );
 
         return http.build();
     }

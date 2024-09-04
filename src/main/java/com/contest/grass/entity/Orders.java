@@ -9,7 +9,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the order", example = "1")
+    @Schema(description = "Unique identifier for the order", example = "41")
     private Long OrderId;
 
     @Column(nullable = false, length = 10)

@@ -9,7 +9,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier for the cart entry", example = "1")
+    @Schema(description = "Unique identifier for the cart entry", example = "51")
     private Long CartId;
 
     @ManyToOne(fetch = FetchType.LAZY)
