@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpRequestDto {
-    private String email;
+public class UserDto {
     private String name;
+    private String email;
+    private String nickname;
+    private String profileImageUrl; // 프로필 사진 URL
+    private String address;
     private String password;
-    private String confirmPassword;
-    private String phoneNumber;
 }
