@@ -11,6 +11,6 @@ import lombok.Setter;
 @Schema(description = "인증 요청에 대한 응답 DTO")
 public class AuthResponse {
 
-    @Schema(description = "JWT 인증 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+    @Schema(description = "JWT 인증 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")
     private String token;
 }

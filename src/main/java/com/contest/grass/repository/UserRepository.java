@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
-    Optional<User> findByEmailAndPassword(String email, String password);
+    Optional<User> findByNickname(String nickname); // 닉네임 중복 체크를 위한 메서드
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     Optional<User> findByGoogleId(String googleId);

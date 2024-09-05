@@ -37,7 +37,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private Integer sprouts;
+    private Integer sprouts = 0;
 
     @Column(columnDefinition = "TINYINT(1)")
     private boolean isVerified;

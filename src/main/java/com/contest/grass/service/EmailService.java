@@ -1,26 +1,19 @@
 package com.contest.grass.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    // 인증번호 이메일 전송
+    public void sendVerificationCode(String email, String verificationCode) {
+        String subject = "Your Email Verification Code";
+        String message = "Your verification code is: " + verificationCode;
+        sendSimpleMessage(email, subject, message);
+    }
 
-    public void sendVerificationEmail(String toEmail, String token) {
-        String subject = "Email Verification";
-        String verificationLink = "http://your-domain.com/api/auth/verify-email?token=" + token;
-        String body = "Click the link to verify your email: " + verificationLink;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
-
-        mailSender.send(message);
+    // 간단한 이메일 발송 메소드
+    private void sendSimpleMessage(String to, String subject, String text) {
+        // 이메일 전송 로직 구현 (메일 전송 라이브러리 사용)
     }
 }
