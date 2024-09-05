@@ -185,8 +185,8 @@ public class UserController {
 
     // 이메일 인증
     @Operation(summary = "이메일 인증", description = "이메일 인증을 처리")
-    @GetMapping("/verify-email")
-    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+    @PostMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestBody String token) {
         boolean isVerified = userService.verifyEmail(token);
 
         if (isVerified) {
@@ -195,4 +195,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않거나 만료된 토큰입니다.");
         }
     }
+
 }

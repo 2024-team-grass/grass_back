@@ -1,5 +1,6 @@
 package com.contest.grass.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "상품 요청 DTO")
 public class ItemRequestDto {
+
+    @Schema(description = "상품명", example = "Apple", required = true)
     private String itemName;       // 상품명
+
+    @Schema(description = "상품 설명", example = "신선한 사과입니다.", required = true)
     private String description;    // 상품 설명
+
+    @Schema(description = "상품 가격", example = "1000.00", required = true)
     private Double price;          // 상품 가격
+
+    @Schema(description = "상품 카테고리", example = "과일", required = true)
     private String category;       // 상품 카테고리
 }

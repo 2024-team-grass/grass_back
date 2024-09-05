@@ -1,5 +1,6 @@
 package com.contest.grass.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "카테고리 응답 DTO")
 public class CategoryResponseDto {
-    private Long categoryId;         // 카테고리 ID
-    private String name;             // 카테고리 이름
-    private Long parentId;           // 부모 카테고리 ID (최상위 카테고리인 경우 null)
-    private List<CategoryResponseDto> childCategories; // 자식 카테고리 목록
+
+    @Schema(description = "카테고리 ID", example = "61", required = true)
+    private Long categoryId;
+
+    @Schema(description = "카테고리 이름", example = "Electronics", required = true)
+    private String name;
+
+    @Schema(description = "부모 카테고리 ID (최상위 카테고리인 경우 null)", example = "null")
+    private Long parentId;
+
+    @Schema(description = "자식 카테고리 목록")
+    private List<CategoryResponseDto> childCategories;
 }
