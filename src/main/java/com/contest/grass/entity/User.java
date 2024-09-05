@@ -1,10 +1,13 @@
 package com.contest.grass.entity;
 
+import com.contest.grass.dto.UserDto;
+import com.contest.grass.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -46,4 +49,23 @@ public class User {
     private List<Post> posts;
 
     private boolean enabled = true;
+
+    // User -> UserDto 변환 메서드 추가
+    public UserDto toDto() {
+        // Post를 PostDto로 변환
+        List<PostDto> postDtos = this.posts.stream()
+                .map(post -> new PostDto(post.getPostId(), post.getContent(), post.getCreatedAt().toString()))
+                .collect(Collectors.toList());
+
+        // User -> UserDto 변환
+        return new UserDto(
+                this.getName(),
+                this.getEmail(),
+                this.getNickname(),
+                null, // 프로필 이미지 URL (필요하면 추가)
+                null, // 주소 (필요하면 추가)
+                this.getPassword(),
+                postDtos
+        );
+    }
 }

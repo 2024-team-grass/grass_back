@@ -22,6 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -174,7 +175,6 @@ public class UserController {
     }
 
 
-
     // 아이디 찾기
     @Transactional(readOnly = true)
     @Operation(summary = "아이디 찾기", description = "사용자의 전화번호를 이용해 이메일을 찾음")
@@ -226,13 +226,12 @@ public class UserController {
         return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
     }
 
-
-    // 사용자 프로필 및 게시물 조회
+    // 사용자 정보 및 게시물 조회
     @Operation(summary = "사용자 정보 및 게시물 조회", description = "사용자의 프로필 정보와 그 사용자가 작성한 게시물을 조회")
     @GetMapping("/{userId}/mypage")
-    public ResponseEntity<User> getUserProfile(@PathVariable Long userId) {
+    public ResponseEntity<UserDto> getUserProfile(@PathVariable Long userId) {
         User user = userService.getUserProfile(userId);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(user.toDto()); // 간단하게 변환
     }
 
     // 회원 삭제

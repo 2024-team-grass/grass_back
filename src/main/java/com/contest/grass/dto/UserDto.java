@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,11 +24,14 @@ public class UserDto {
     private String nickname;
 
     @Schema(description = "프로필 사진의 URL", example = "https://example.com/profile.jpg")
-    private String profileImageUrl; // 프로필 사진 URL
+    private String profileImageUrl;
 
     @Schema(description = "사용자의 주소", example = "서울특별시 강남구 테헤란로 123")
     private String address;
 
     @Schema(description = "사용자의 비밀번호", example = "password123", required = true)
     private String password;
+
+    @Schema(description = "사용자가 작성한 게시물 리스트")
+    private List<PostDto> posts; // 게시물 리스트 추가
 }
