@@ -2,8 +2,12 @@ package com.contest.grass.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Schema(description = "Cart entity representing an item added to the user's shopping cart")
 public class Cart {
 
@@ -35,61 +39,4 @@ public class Cart {
 
     @Schema(description = "Shipping fee for the items in the cart", example = "2500")
     private double shippingFee; // 배송비
-
-    // Getters and Setters
-    public Long getCartId() {
-        return CartId;
-    }
-
-    public void setCartId(Long cartId) {
-        this.CartId = cartId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public double getItemPrice() {
-        return itemPrice;
-    }
-
-    public void setItemPrice(double itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public double getShippingFee() {
-        return shippingFee;
-    }
-
-    public void setShippingFee(double shippingFee) {
-        this.shippingFee = shippingFee;
-    }
 }

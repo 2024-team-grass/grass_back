@@ -6,8 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Schema(description = "Item entity representing a product available for sale")
 public class Item {
 
@@ -28,45 +32,4 @@ public class Item {
 
     @Schema(description = "Quantity of the item in stock", example = "50")
     private Integer qty; // 재고수량 quantity 줄임말
-
-    // Getter and Setter methods
-    public void setItemId(Long itemId) {
-        ItemId = itemId;
-    }
-
-    public Long getItemId() {
-        return ItemId;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setSale(String sale) {
-        this.sale = sale;
-    }
-
-    public String getSale() {
-        return sale;
-    }
-
-    public Integer getQty() {
-        return qty;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
 }

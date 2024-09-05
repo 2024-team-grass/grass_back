@@ -2,8 +2,12 @@ package com.contest.grass.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Schema(description = "Post entity representing a user's post in the system")
 public class Post {
 
@@ -31,53 +35,4 @@ public class Post {
     @Column(nullable = false)
     @Schema(description = "Date when the post was created", example = "2024-09-03T10:15:30")
     private String createdAt;
-
-    // Getter and Setter methods
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Long getGoodbtn() {
-        return goodbtn;
-    }
-
-    public void setGoodbtn(Long goodbtn) {
-        this.goodbtn = goodbtn;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 }

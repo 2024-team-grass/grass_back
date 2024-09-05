@@ -41,7 +41,7 @@ public class UserService {
         user.setPhoneNumber(phoneNumber);
         user.setNickname(UUID.randomUUID().toString().substring(0, 8)); // 임시 닉네임 생성
         user.setSprouts(0); // 새싹 초기값
-        user.setIsVerified(false); // 이메일 인증 상태를 false로 초기화
+        user.setVerified(false); // 이메일 인증 상태를 false로 초기화
         User savedUser = userRepository.save(user);
 
         // 이메일 인증 토큰 생성 및 저장
@@ -73,7 +73,7 @@ public class UserService {
 
         // 사용자 인증 처리
         User user = verificationToken.getUser();
-        user.setIsVerified(true); // 이메일 인증 완료
+        user.setVerified(true); // 이메일 인증 완료
         userRepository.save(user);
 
         // 인증이 완료된 토큰 삭제

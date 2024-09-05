@@ -2,8 +2,12 @@ package com.contest.grass.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Schema(description = "Orders entity representing a customer's order in the system")
 public class Orders {
 
@@ -50,77 +54,4 @@ public class Orders {
     @Column(nullable = false)
     @Schema(description = "Total amount for the order in currency", example = "25000")
     private Integer totalAmount; // 주문 총액
-
-    // Getter and Setter methods
-    public Long getOrderId() {
-        return OrderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        OrderId = orderId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(Integer phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDetailAddress() {
-        return detailAddress;
-    }
-
-    public void setDetailAddress(String detailAddress) {
-        this.detailAddress = detailAddress;
-    }
-
-    public String getRequest() {
-        return request;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
-    }
-
-    public String getDoorpassword() {
-        return doorpassword;
-    }
-
-    public void setDoorpassword(String doorpassword) {
-        this.doorpassword = doorpassword;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Integer getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 }
