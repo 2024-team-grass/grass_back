@@ -9,6 +9,7 @@ import com.contest.grass.entity.User;
 import com.contest.grass.repository.EmailVerificationTokenRepository;
 import com.contest.grass.repository.UserRepository;
 import com.contest.grass.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class UserController {
     public void deleteToken(EmailVerificationToken token) {
         tokenRepository.delete(token);  // 토큰 삭제
     }
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
 
     // 구글 로그인
@@ -119,6 +124,26 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("인증 실패");
         }
     }
+//
+//    // 일반 로그인
+//    @Operation(summary = "일반 로그인", description = "이메일과 비밀번호를 사용하여 로그인")
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
+//        Optional<User> userOpt = userRepository.findByEmail(loginRequest.getEmail());
+//
+//        if (userOpt.isPresent()) {
+//            User user = userOpt.get();
+//
+//            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+//                String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
+//                return ResponseEntity.ok(new AuthResponse(jwtToken));
+//            } else {
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("잘못된 자격 증명: 비밀번호가 일치하지 않습니다.");
+//            }
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+//    }
 
     // 일반 로그인
     @Operation(summary = "일반 로그인", description = "이메일과 비밀번호를 사용하여 로그인")
@@ -131,7 +156,9 @@ public class UserController {
 
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
-                return ResponseEntity.ok(new AuthResponse(jwtToken));
+
+                // 명시적으로 ResponseEntity의 body에 AuthResponse를 지정
+                return ResponseEntity.ok().body(new AuthResponse(jwtToken));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("잘못된 자격 증명: 비밀번호가 일치하지 않습니다.");
             }
@@ -140,39 +167,45 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
     }
 
-    // 회원가입
-    @Transactional
-    @Operation(summary = "회원가입", description = "새 사용자를 등록하고 JWT 토큰을 생성")
+
+
+    // 회원가입(이메일 인증번호 발송)
+    @Operation(summary = "회원가입", description = "새 사용자를 등록, 이메일 인증 완료 시 회원 추가")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.emailExists(signUpRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이메일이 이미 존재합니다.");
         }
 
-        // UserService의 register 메서드 호출
-        User user = userService.register(
-                signUpRequest.getEmail(),
-                signUpRequest.getName(),
-                signUpRequest.getPassword(),
-                signUpRequest.getPhoneNumber()
-        );
+        // 이메일로 인증번호 발송
+        userService.sendVerificationCode(signUpRequest.getEmail());
 
-        // JWT 토큰 생성 및 응답
-        String jwtToken = jwtTokenUtil.generateToken(user.getEmail());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(jwtToken));
+        // 사용자 정보 임시 저장
+        userService.saveSignUpRequest(signUpRequest);
+
+        return ResponseEntity.ok("이메일로 인증번호를 발송했습니다.");
     }
 
     // 이메일 OTP 인증
     @Operation(summary = "이메일 인증", description = "이메일 인증을 처리")
     @PostMapping("/verify-code")
     public ResponseEntity<String> verifyEmailCode(@RequestParam String email, @RequestParam String code) {
-        boolean isVerified = userService.verifyEmailCode(email, code); // 수정된 부분
+        boolean isVerified = userService.verifyEmailCode(email, code); // 인증번호 검증
+
         if (isVerified) {
-            return ResponseEntity.ok("Email verified successfully");
+            // 회원가입을 완료합니다.
+            userService.completeSignUp(email, code);
+
+            // JWT 토큰 생성 및 응답
+            String jwtToken = jwtTokenUtil.generateToken(email);
+            return ResponseEntity.ok(new String(jwtToken));
+
+
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or expired code");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증코드가 만료되었거나 일치하지 않습니다.");
         }
     }
+
 
 
     // 아이디 찾기
