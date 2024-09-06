@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
-@Tag(name = "Item", description = "Operations related to item management") // Swagger 태그 추가
+@Tag(name = "Item", description = "상품 관리 API") // Swagger 태그 추가
 public class ItemController {
     private final ItemService itemService;
 

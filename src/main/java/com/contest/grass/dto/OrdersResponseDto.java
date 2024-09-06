@@ -1,122 +1,48 @@
 package com.contest.grass.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "주문 응답 DTO")
 public class OrdersResponseDto {
+
+    @Schema(description = "주문 ID", example = "12345", required = true)
     private Long orderId;
+
+    @Schema(description = "주문자 이름", example = "John Doe", required = true)
     private String name;
+
+    @Schema(description = "주문자의 전화번호", example = "01012345678", required = true)
     private Integer phoneNumber;
+
+    @Schema(description = "주문 배송지 주소", example = "서울특별시 강남구 테헤란로 123", required = true)
     private String address;
-    private String detailAddress; // 상세주소
-    private String request; // 요청사항
-    private String doorpassword; // 공동현관 출입번호
-    private String paymentMethod; // 결제 수단 (NaverPay, KakaoPay, CreditCard 등)
-    private Integer totalAmount; // 주문 총액
-    private String status; // 주문 상태 (예: 주문 접수, 배송 중, 배송 완료 등)
-    private String message; // 응답 메시지 (예: 주문이 성공적으로 접수되었습니다.)
 
-    // 기본 생성자
-    public OrdersResponseDto() {}
+    @Schema(description = "상세주소", example = "101호", required = true)
+    private String detailAddress;
 
-    // 모든 필드를 포함하는 생성자
-    public OrdersResponseDto(Long orderId, String name, Integer phoneNumber, String address, String detailAddress, String request, String doorpassword, String paymentMethod, Integer totalAmount, String status, String message) {
-        this.orderId = orderId;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.detailAddress = detailAddress;
-        this.request = request;
-        this.doorpassword = doorpassword;
-        this.paymentMethod = paymentMethod;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.message = message;
-    }
+    @Schema(description = "주문 관련 요청사항", example = "문 앞에 두고 가주세요")
+    private String request;
 
-    // Getters and Setters
-    public Long getOrderId() {
-        return orderId;
-    }
+    @Schema(description = "공동현관 출입번호", example = "1234")
+    private String doorpassword;
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
+    @Schema(description = "결제 수단", example = "NPay", required = true)
+    private String paymentMethod;
 
-    public String getName() {
-        return name;
-    }
+    @Schema(description = "주문 총액", example = "50000", required = true)
+    private Integer totalAmount;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Schema(description = "주문 상태", example = "배송 중", required = true)
+    private String status;
 
-    public Integer getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(Integer phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDetailAddress() {
-        return detailAddress;
-    }
-
-    public void setDetailAddress(String detailAddress) {
-        this.detailAddress = detailAddress;
-    }
-
-    public String getRequest() {
-        return request;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
-    }
-
-    public String getDoorpassword() {
-        return doorpassword;
-    }
-
-    public void setDoorpassword(String doorpassword) {
-        this.doorpassword = doorpassword;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Integer getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @Schema(description = "응답 메시지", example = "주문이 성공적으로 접수되었습니다.", required = true)
+    private String message;
 }

@@ -1,106 +1,49 @@
 package com.contest.grass.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "장바구니 응답 DTO")
 public class CartResponseDto {
-    private Long userId;                        // 사용자 ID
-    private List<CartItemDto> cartItems;        // 장바구니 아이템 목록
-    private Double totalAmount;                 // 장바구니 총 금액
 
-    // 기본 생성자
-    public CartResponseDto() {}
+    @Schema(description = "사용자 ID", example = "123", required = true)
+    private Long userId;  // 사용자 ID
 
-    // 모든 필드를 포함하는 생성자
-    public CartResponseDto(Long userId, List<CartItemDto> cartItems, Double totalAmount) {
-        this.userId = userId;
-        this.cartItems = cartItems;
-        this.totalAmount = totalAmount;
-    }
+    @Schema(description = "장바구니 아이템 목록", required = true)
+    private List<CartItemDto> cartItems;  // 장바구니 아이템 목록
 
-    // Getters and Setters
-    public Long getUserId() {
-        return userId;
-    }
+    @Schema(description = "장바구니 총 금액", example = "50000.0", required = true)
+    private Double totalAmount;  // 장바구니 총 금액
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public List<CartItemDto> getCartItems() {
-        return cartItems;
-    }
-
-    public void setCartItems(List<CartItemDto> cartItems) {
-        this.cartItems = cartItems;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    // 내부 클래스 CartItemDto
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "장바구니 아이템 DTO")
     public static class CartItemDto {
-        private Long itemId;        // 상품 ID
-        private String itemName;    // 상품명
-        private Integer quantity;   // 상품 수량
-        private Double price;       // 상품 가격
-        private Double totalPrice;  // 해당 아이템의 총 가격 (수량 * 가격)
 
-        // 기본 생성자
-        public CartItemDto() {}
+        @Schema(description = "상품 ID", example = "456", required = true)
+        private Long itemId;  // 상품 ID
 
-        // 모든 필드를 포함하는 생성자
-        public CartItemDto(Long itemId, String itemName, Integer quantity, Double price, Double totalPrice) {
-            this.itemId = itemId;
-            this.itemName = itemName;
-            this.quantity = quantity;
-            this.price = price;
-            this.totalPrice = totalPrice;
-        }
+        @Schema(description = "상품명", example = "Apple", required = true)
+        private String itemName;  // 상품명
 
-        // Getters and Setters
-        public Long getItemId() {
-            return itemId;
-        }
+        @Schema(description = "상품 수량", example = "2", required = true)
+        private Integer quantity;  // 상품 수량
 
-        public void setItemId(Long itemId) {
-            this.itemId = itemId;
-        }
+        @Schema(description = "상품 가격", example = "10000.0", required = true)
+        private Double price;  // 상품 가격
 
-        public String getItemName() {
-            return itemName;
-        }
-
-        public void setItemName(String itemName) {
-            this.itemName = itemName;
-        }
-
-        public Integer getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(Integer quantity) {
-            this.quantity = quantity;
-        }
-
-        public Double getPrice() {
-            return price;
-        }
-
-        public void setPrice(Double price) {
-            this.price = price;
-        }
-
-        public Double getTotalPrice() {
-            return totalPrice;
-        }
-
-        public void setTotalPrice(Double totalPrice) {
-            this.totalPrice = totalPrice;
-        }
+        @Schema(description = "해당 아이템의 총 가격 (수량 * 가격)", example = "20000.0", required = true)
+        private Double totalPrice;  // 해당 아이템의 총 가격
     }
 }

@@ -1,10 +1,14 @@
 package com.contest.grass.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class EmailVerificationToken {
 
     @Id
@@ -33,22 +37,5 @@ public class EmailVerificationToken {
         this.token = token;
         this.expiresAt = expiresAt;
         this.createdAt = LocalDateTime.now();
-    }
-
-    // Getters & Setters
-    public User getUser() {
-        return user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }
