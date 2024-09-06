@@ -1,5 +1,6 @@
 package com.contest.grass.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
@@ -15,11 +16,13 @@ public class Cart {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(description = "User who owns the cart")
+    @JsonBackReference // 순환 참조 방지
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     @Schema(description = "Item added to the cart")
+    @JsonBackReference // 순환 참조 방지
     private Item item;
 
     @Schema(description = "Quantity of the item selected by the user", example = "2")
