@@ -1,7 +1,9 @@
 package com.contest.grass.controller;
 
 import com.contest.grass.entity.Post;
+import com.contest.grass.entity.User;
 import com.contest.grass.service.PostService;
+import com.contest.grass.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService; // UserService 의존성 주입
     }
 
     @Operation(summary = "모든 게시물 조회", description = "모든 게시물의 닉네임, 내용, 좋아요 수를 조회")
@@ -37,7 +41,10 @@ public class PostController {
 
     @Operation(summary = "게시물 생성", description = "새로운 게시물을 생성")
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestBody Post post, @RequestParam Long userId) {
+        // userId를 통해 User 객체를 찾음
+        User user = userService.getUserById(userId); // UserService에서 userId로 사용자 검색
+        post.setUser(user); // Post에 user 설정
         Post newPost = postService.createPost(post);
         return ResponseEntity.ok(newPost);
     }

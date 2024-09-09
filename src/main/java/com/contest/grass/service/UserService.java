@@ -180,4 +180,8 @@ public class UserService {
     private boolean isPasswordEncoded(String password) {
         return password.startsWith("$2a$");
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    }
 }
