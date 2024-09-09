@@ -9,8 +9,9 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     @Schema(description = "Unique identifier for the order", example = "1")
-    private Long OrderId;
+    private Long OrdersId;
 
     @Column(nullable = false, length = 10)
     @Schema(description = "Name of the customer placing the order", example = "John Doe")
@@ -18,7 +19,7 @@ public class Orders {
 
     @Column(nullable = false, length = 11)
     @Schema(description = "Phone number of the customer", example = "01012345678")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(nullable = false, length = 50)
     @Schema(description = "Delivery address for the order", example = "123 Main St, Seoul, Korea")
@@ -52,12 +53,12 @@ public class Orders {
     private Integer totalAmount; // 주문 총액
 
     // Getter and Setter methods
-    public Long getOrderId() {
-        return OrderId;
+    public Long getOrdersId() {
+        return OrdersId;
     }
 
-    public void setOrderId(Long orderId) {
-        OrderId = orderId;
+    public void setOrdersId(Long orderId) {
+        OrdersId = orderId;
     }
 
     public String getName() {
@@ -68,11 +69,11 @@ public class Orders {
         this.name = name;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

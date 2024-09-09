@@ -22,27 +22,27 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @Operation(summary = "모든 카트 항목 조회", description = "모든 카트 항목을 조회")
+    @Operation(summary = "모든 카트 항목 조회", description = "장바구니에 담긴 모든 항목을 조회합니다.")
     @GetMapping
     public List<Cart> getAllCartItems() {
         return cartService.getAllCartItems();
     }
 
-    @Operation(summary = "특정 카트 항목 조회", description = "특정 ID를 가진 카트 항목을 조회")
+    @Operation(summary = "특정 카트 항목 조회", description = "카트 ID로 특정 장바구니 항목을 조회합니다.")
     @GetMapping("/{cartId}")
     public ResponseEntity<Cart> getCartItem(@PathVariable Long cartId) {
         Cart cart = cartService.getCartItem(cartId);
         return ResponseEntity.ok(cart);
     }
 
-    @Operation(summary = "상품 개수 업데이트", description = "특정 카트 항목의 상품 개수를 업데이트")
+    @Operation(summary = "상품 개수 업데이트", description = "카트 항목의 상품 개수를 업데이트합니다.")
     @PostMapping("/{cartId}/count")
     public ResponseEntity<Cart> updateCartItemCount(@PathVariable Long cartId, @RequestParam Integer count) {
         Cart updatedCart = cartService.updateCartItemCount(cartId, count);
         return ResponseEntity.ok(updatedCart);
     }
 
-    @Operation(summary = "총 금액 업데이트", description = "특정 카트 항목의 총 금액을 업데이트")
+    @Operation(summary = "총 금액 업데이트", description = "카트 항목의 상품 가격과 배송비를 이용해 총 금액을 업데이트합니다.")
     @PostMapping("/{cartId}/totalPrice")
     public ResponseEntity<Cart> updateTotalPrice(@PathVariable Long cartId,
                                                  @RequestParam double itemPrice,
@@ -51,7 +51,7 @@ public class CartController {
         return ResponseEntity.ok(updatedCart);
     }
 
-    @Operation(summary = "구매하기", description = "특정 카트 항목의 총 금액을 확인하고 구매")
+    @Operation(summary = "구매하기", description = "특정 카트 항목의 총 금액을 확인하고 구매합니다.")
     @GetMapping("/{cartId}/checkout")
     public ResponseEntity<Double> checkout(@PathVariable Long cartId) {
         Cart cart = cartService.getCartItem(cartId);

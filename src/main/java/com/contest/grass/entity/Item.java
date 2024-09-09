@@ -1,12 +1,10 @@
 package com.contest.grass.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +13,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ItemId;
+    private Long itemId; // 변수명은 소문자로 시작하는 것이 관례입니다.
 
     @Column(length = 10)
     private String title; // 상품명
@@ -24,5 +22,5 @@ public class Item {
 
     private String sale;
 
-    private Integer qty; // 재고수량 quantity 줄임말
+    private Integer qty; // 재고수량
 }
