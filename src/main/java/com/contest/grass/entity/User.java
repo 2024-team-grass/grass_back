@@ -5,6 +5,8 @@ import com.contest.grass.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import java.util.List;
 import java.util.stream.Collectors;

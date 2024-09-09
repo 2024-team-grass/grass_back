@@ -2,6 +2,8 @@ package com.contest.grass.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Schema(description = "Post entity representing a user's post in the system")
@@ -14,6 +16,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     @Schema(description = "User who created the post")
     private User user;
 
