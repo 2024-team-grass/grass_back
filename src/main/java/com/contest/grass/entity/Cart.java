@@ -1,5 +1,6 @@
 package com.contest.grass.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +16,12 @@ public class Cart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore  // 직렬화 과정에서 무시
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
+    @JsonIgnore  // 직렬화 과정에서 무시
     private Item item;
 
     private Integer count; // 선택 개수
