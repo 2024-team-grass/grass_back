@@ -27,6 +27,10 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtTokenUtil jwtTokenUtil;
 
+    // 카카오페이 관련 URL 패턴
+    private static final String KAKAOPAY_URL_PATTERN = "/kakaopay/**";
+
+    // 기존 URL 패턴
     private static final String LOGIN_URL = "/login";
     private static final String ROOT_URL = "/";
     private static final String AUTH_URL_PATTERN = "/auth/**";
@@ -57,8 +61,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // favicon.ico 허용
+                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // 기본 경로 허용
                         .requestMatchers(SWAGGER_WHITELIST).permitAll() // Swagger 경로 허용
+                        .requestMatchers(KAKAOPAY_URL_PATTERN).permitAll() // 카카오페이 결제 관련 엔드포인트 허용
                         .requestMatchers(AUTH_URL_PATTERN, API_URL_PATTERN).authenticated() // 인증이 필요한 경로
                         .anyRequest().authenticated() // 그 외 나머지 요청도 인증 필요
                 )
@@ -95,9 +100,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // favicon.ico 허용
+                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // 기본 경로 허용
                         .requestMatchers(SWAGGER_WHITELIST).permitAll() // Swagger 경로 허용
                         .requestMatchers(AUTH_URL_PATTERN, API_URL_PATTERN).permitAll() // 테스트 환경에서는 인증 없이 허용
+                        .requestMatchers(KAKAOPAY_URL_PATTERN).permitAll() // 카카오페이 결제 엔드포인트 인증 없이 허용
                         .anyRequest().permitAll() // 모든 요청을 인증 없이 허용
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -131,7 +137,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // 모든 도메인 허용
+        configuration.setAllowedOrigins(List.of("*")); // 모든 도메인 허용 (운영 시, 특정 도메인으로 제한 권장)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
         configuration.setAllowCredentials(true); // 자격 증명 허용 (토큰 등)
