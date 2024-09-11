@@ -41,9 +41,6 @@ public class SecurityConfig {
             "/swagger-ui.html"
     };
 
-    // favicon.ico 관련 처리 추가
-    private static final String FAVICON_URL = "/favicon.ico";
-
     public SecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, JwtTokenUtil jwtTokenUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -57,10 +54,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // favicon.ico 허용
+                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN).permitAll()
                         .requestMatchers(SWAGGER_WHITELIST).permitAll() // Swagger 경로 허용
                         .requestMatchers(AUTH_URL_PATTERN, API_URL_PATTERN).authenticated() // 인증이 필요한 경로
-                        .anyRequest().authenticated() // 그 외 나머지 요청도 인증 필요
+                        .anyRequest().authenticated() // 나머지 요청에 대해서 인증 필요
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage(LOGIN_URL)
@@ -95,7 +92,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN, FAVICON_URL).permitAll() // favicon.ico 허용
+                        .requestMatchers(ROOT_URL, LOGIN_URL, STATIC_RESOURCES_PATTERN).permitAll()
                         .requestMatchers(SWAGGER_WHITELIST).permitAll() // Swagger 경로 허용
                         .requestMatchers(AUTH_URL_PATTERN, API_URL_PATTERN).permitAll() // 테스트 환경에서는 인증 없이 허용
                         .anyRequest().permitAll() // 모든 요청을 인증 없이 허용
