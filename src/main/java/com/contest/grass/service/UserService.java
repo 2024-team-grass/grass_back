@@ -184,4 +184,16 @@ public class UserService {
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
+
+    public User updateNickname(Long id, String nickname) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setNickname(nickname);
+            return userRepository.save(user);
+        }
+
+        throw new RuntimeException("User not found with id " + id);
+    }
 }

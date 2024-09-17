@@ -167,6 +167,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
     }
 
+    // 닉네임 수정 엔드포인트
+    @Operation(summary = "닉네임수정", description = "닉네임 수정 및 업데이트")
+    @PutMapping("/{id}/nickname")
+    public ResponseEntity<User> updateNickname(@PathVariable Long id, @RequestBody String newNickname) {
+        User updatedUser = userService.updateNickname(id, newNickname);
+        return ResponseEntity.ok(updatedUser); // 변경된 유저 정보 반환
+    }
 
 
     // 회원가입(이메일 인증번호 발송)

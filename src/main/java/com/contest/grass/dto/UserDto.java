@@ -14,6 +14,8 @@ import java.util.List;
 @Schema(description = "User DTO representing a user in the system")
 public class UserDto {
 
+    private Long id;
+
     @Schema(description = "사용자의 이름", example = "John Doe", required = true)
     private String name;
 

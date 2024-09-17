@@ -18,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -61,6 +62,7 @@ public class User {
 
         // User -> UserDto 변환
         return new UserDto(
+                this.getId(),
                 this.getName(),
                 this.getEmail(),
                 this.getNickname(),

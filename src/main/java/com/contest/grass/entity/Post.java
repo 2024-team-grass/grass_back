@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -30,8 +32,22 @@ public class Post {
     @Column(length = 30, nullable = false)
     private String content;
 
+    public enum LikeStatus {
+        LIKED,
+        UNLIKED
+    }
+
+    @Enumerated(EnumType.STRING)
+    private LikeStatus likeStatus = LikeStatus.UNLIKED; //초기 상태는 좋아요가 없는 상태
+
     private Long goodbtn;
 
-    @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
+
+    //게시글이 처음 저장될 때 자동으로 호출되는 메서드
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 }

@@ -39,23 +39,21 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    // 5. 게시물 좋아요 증가
-    public Post incrementLike(Long id) {
+    // 게시물 좋아요 증가
+    public Post toggleLike(Long id) {
         Optional<Post> post = postRepository.findById(id);
         if (post.isPresent()) {
             Post existingPost = post.get();
-            existingPost.setGoodbtn(existingPost.getGoodbtn() + 1);
-            return postRepository.save(existingPost); // 업데이트 후 저장
-        }
-        throw new RuntimeException("Post not found with id: " + id);
-    }
 
-    // 6. 게시물 좋아요 감소
-    public Post decrementLike(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()) {
-            Post existingPost = post.get();
-            existingPost.setGoodbtn(existingPost.getGoodbtn() - 1);
+            // 좋아요 상태에 따라 증가 또는 감소
+            if (existingPost.getLikeStatus() == Post.LikeStatus.UNLIKED) {
+                existingPost.setGoodbtn(existingPost.getGoodbtn() + 1); // 좋아요 증가
+                existingPost.setLikeStatus(Post.LikeStatus.LIKED); // 상태를 좋아요로 변경
+            } else {
+                existingPost.setGoodbtn(existingPost.getGoodbtn() - 1); // 좋아요 취소, 좋아요 감소
+                existingPost.setLikeStatus(Post.LikeStatus.UNLIKED); // 상태를 좋아요 취소로 변경
+            }
+
             return postRepository.save(existingPost); // 업데이트 후 저장
         }
         throw new RuntimeException("Post not found with id: " + id);

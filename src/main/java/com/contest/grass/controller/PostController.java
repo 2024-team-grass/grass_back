@@ -56,17 +56,10 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "좋아요 클릭", description = "특정 게시물에 좋아요를 추가")
+    @Operation(summary = "좋아요 조회", description = "게시물의 좋아요 조회")
     @PostMapping("/{id}/like")
-    public ResponseEntity<Post> likePost(@PathVariable Long id) {
-        Post updatedPost = postService.incrementLike(id);
-        return ResponseEntity.ok(updatedPost);
-    }
-
-    @Operation(summary = "좋아요 취소", description = "특정 게시물에 대한 좋아요를 취소")
-    @PostMapping("/{id}/unlike")
-    public ResponseEntity<Post> unlikePost(@PathVariable Long id) {
-        Post updatedPost = postService.decrementLike(id);
+    public ResponseEntity<Post> toggleLike(@PathVariable Long id) {
+        Post updatedPost = postService.toggleLike(id);
         return ResponseEntity.ok(updatedPost);
     }
 
